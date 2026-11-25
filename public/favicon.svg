@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" fill="#F1EFE7" />
+  <rect x="2" y="2" width="60" height="60" fill="none" stroke="#111111" stroke-width="2" />
+  <circle cx="51" cy="13" r="5" fill="#D72626" />
+  <text x="9" y="47" font-family="Georgia, Times New Roman, serif" font-style="italic" font-size="38" fill="#111111">V</text>
+  <text x="34" y="47" font-family="Georgia, Times New Roman, serif" font-size="38" fill="#D72626">.</text>
+</svg>
