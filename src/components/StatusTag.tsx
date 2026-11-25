@@ -1,10 +1,5 @@
 import type { ProjectStatus } from '@/data';
-
-export const projectStatusLabels: Record<ProjectStatus, string> = {
-  live: 'Live',
-  'in-progress': 'In progress',
-  built: 'Built',
-};
+import { projectStatusLabels } from '@/utils/status';
 
 const dotStyles: Record<ProjectStatus, string> = {
   live: 'bg-accent',

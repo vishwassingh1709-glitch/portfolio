@@ -1,5 +1,5 @@
 import type { Project } from '@/data';
-import { projectStatusLabels } from './StatusTag';
+import { projectStatusLabels } from '@/utils/status';
 
 interface ProjectPosterProps {
   project: Project;
@@ -146,7 +146,7 @@ export function ProjectPoster({ project, index }: ProjectPosterProps) {
 
       <span
         aria-hidden="true"
-        className={`absolute bottom-2 right-4 select-none font-serif text-[clamp(3.5rem,7vw,6rem)] italic leading-[0.75] ${styles.mark}`}
+        className={`absolute bottom-3 right-5 select-none font-serif text-[clamp(3rem,6vw,5rem)] italic leading-none ${styles.mark}`}
       >
         {project.mark}
       </span>

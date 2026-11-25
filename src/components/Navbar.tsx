@@ -1,6 +1,7 @@
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { ArrowUpRight, Menu, X } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { profile, visibleNavItems, visibleSectionIds } from '@/data';
 import { useActiveSection } from '@/hooks/useActiveSection';
 import { useBodyScrollLock } from '@/hooks/useBodyScrollLock';
@@ -35,7 +36,7 @@ export function Navbar() {
   }, [open]);
 
   useEffect(() => {
-    const query = window.matchMedia('(min-width: 1024px)');
+    const query = window.matchMedia('(min-width: 1280px)');
     const onChange = () => {
       if (query.matches) setOpen(false);
     };
@@ -46,7 +47,8 @@ export function Navbar() {
   const close = () => setOpen(false);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-40 border-b border-ink/20 bg-paper/90 backdrop-blur-md">
+    <>
+      <header className="fixed inset-x-0 top-0 z-40 border-b border-ink/20 bg-paper/90 backdrop-blur-md">
       <div className="relative z-40 flex h-16 items-center justify-between gap-4 shell md:h-[72px]">
         <a
           href="#home"
@@ -64,7 +66,7 @@ export function Navbar() {
           </span>
         </a>
 
-        <nav aria-label="Primary" className="hidden items-center gap-0.5 lg:flex">
+        <nav aria-label="Primary" className="hidden items-center gap-0.5 xl:flex">
           {visibleNavItems.map((item, index) => (
             <a
               key={item.id}
@@ -86,7 +88,7 @@ export function Navbar() {
           <SocialLinks className="hidden md:flex" iconSize={14} />
           <a
             href="#contact"
-            className="hidden items-center gap-2 border border-ink px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.12em] transition-colors hover:bg-ink hover:text-paper sm:inline-flex"
+            className="hidden shrink-0 whitespace-nowrap items-center gap-2 border border-ink px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.12em] transition-colors hover:bg-ink hover:text-paper sm:inline-flex"
           >
             Let&apos;s talk
             <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
@@ -94,7 +96,7 @@ export function Navbar() {
           <button
             ref={toggleRef}
             type="button"
-            className="inline-flex h-10 w-10 items-center justify-center border border-ink/30 transition-colors hover:bg-ink hover:text-paper lg:hidden"
+            className="inline-flex h-10 w-10 items-center justify-center border border-ink/30 transition-colors hover:bg-ink hover:text-paper xl:hidden"
             aria-expanded={open}
             aria-controls="mobile-menu"
             aria-label={open ? 'Close menu' : 'Open menu'}
@@ -107,29 +109,16 @@ export function Navbar() {
 
       <AnimatePresence>
         {open && (
-          <>
-            <motion.button
-              key="backdrop"
-              type="button"
-              tabIndex={-1}
-              aria-hidden="true"
-              className="fixed inset-0 z-20 cursor-default bg-night/45 backdrop-blur-[2px] lg:hidden"
-              initial={reduce ? false : { opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              onClick={close}
-            />
-            <motion.div
-              key="panel"
-              id="mobile-menu"
-              ref={panelRef}
-              className="absolute inset-x-0 top-full z-30 max-h-[calc(100dvh-4rem)] overflow-y-auto border-b border-ink bg-paper lg:hidden"
-              initial={reduce ? false : { opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-            >
+          <motion.div
+            key="panel"
+            id="mobile-menu"
+            ref={panelRef}
+            className="absolute inset-x-0 top-full z-30 max-h-[calc(100dvh-4rem)] overflow-y-auto border-b border-ink bg-paper xl:hidden"
+            initial={reduce ? false : { opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+          >
               <div className="shell py-6">
                 <nav aria-label="Mobile primary">
                   <ul>
@@ -166,9 +155,29 @@ export function Navbar() {
                 </div>
               </div>
             </motion.div>
-          </>
         )}
       </AnimatePresence>
-    </header>
+      </header>
+
+      {createPortal(
+        <AnimatePresence>
+          {open && (
+            <motion.button
+              key="backdrop"
+              type="button"
+              tabIndex={-1}
+              aria-hidden="true"
+              className="fixed inset-0 z-30 cursor-default bg-night/45 backdrop-blur-[2px] xl:hidden"
+              initial={reduce ? false : { opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              onClick={close}
+            />
+          )}
+        </AnimatePresence>,
+        document.body,
+      )}
+    </>
   );
 }

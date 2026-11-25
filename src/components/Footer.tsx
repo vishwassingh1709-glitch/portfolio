@@ -1,9 +1,9 @@
 import { ArrowUp } from 'lucide-react';
 import { contentNavItems, profile } from '@/data';
 
-export function Footer() {
-  const year = new Date().getFullYear();
+const year = new Date().getFullYear();
 
+export function Footer() {
   return (
     <footer className="bg-night text-paper">
       <div className="shell border-t border-paper/15 py-8 md:py-10">
